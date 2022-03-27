@@ -1,0 +1,28 @@
+{
+  "name": "Alist v2",
+  "description": "Alist on Heroku",
+  "keywords": ["Alist"],
+  "env": {
+    "EXPIRATION": {
+      "description": "Cache invalidation time (unit: minutes)",
+      "value": "60"
+    },
+    "CLEANUP_INTERVAL": {
+      "description": "Clear the invalidation cache interval",
+      "value": "120"
+    },
+    "ASSETS": {
+      "description": "static resources(refer to https://alist-doc.nn.ci/en/docs/setting/config#assets)",
+      "value": "https://npm.elemecdn.com/alist-web@$version/dist/"
+    }
+  },
+  "addons": [
+    {
+      "plan": "heroku-postgresql"
+    }
+  ],
+  "website": "https://github.com/Xhofe/alist",
+  "repository": "https://github.com/alist-org/alist-heroku-postgres",
+  "logo": "https://cdn.jsdelivr.net/gh/alist-org/logo@main/logo.svg",
+  "stack": "container"
+}
