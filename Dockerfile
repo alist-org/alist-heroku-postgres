@@ -7,6 +7,7 @@ WORKDIR /opt/alist/
 ENV DB_SLL_MODE require
 ADD main /main
 RUN chmod +x /main
-RUN /main
+ADD entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-CMD [ "./alist", "-docker" ]
+ENTRYPOINT ["sh", "/entrypoint.sh"]
