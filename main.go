@@ -7,6 +7,7 @@ import (
 
 func main() {
 	DatabaseUrl := os.Getenv("DATABASE_URL")
+	fmt.Println("DatabaseUrl",DatabaseUrl)
 	// DATABASE_URL = postgres://user3123:passkja83kd8@ec2-117-21-174-214.compute-1.amazonaws.com:6212/db982398
 	u, err := url.Parse(DatabaseUrl)
 	if err != nil {
