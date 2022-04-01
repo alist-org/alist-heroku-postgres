@@ -1,4 +1,4 @@
 /main
 
 cd /opt/alist
-./alist -conf data/config.json
+./alist -conf data/config.json -docker
