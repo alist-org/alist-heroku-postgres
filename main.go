@@ -47,7 +47,7 @@ type Config struct {
 func main() {
 	DATABASE_URL := os.Getenv("DATABASE_URL")
 	fmt.Println("DatabaseUrl", DATABASE_URL)
-	DATABASE_URL = "postgres://user3123:passkja83kd8@ec2-117-21-174-214.compute-1.amazonaws.com:6212/db982398"
+	//DATABASE_URL = "postgres://hfhgpvbymdzusj:39d7f6f3ee4288103e382d5dec22ce668c4e5cb65120f64d574b808775674eb4@ec2-3-218-171-44.compute-1.amazonaws.com:5432/d4o07n33pf6ot7"
 	u, err := url.Parse(DATABASE_URL)
 	if err != nil {
 		fmt.Println(err)
