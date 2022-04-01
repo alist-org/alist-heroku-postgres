@@ -3,7 +3,7 @@
   "description": "Alist on Heroku",
   "keywords": ["Alist"],
   "env": {
-    "EXPIRATION": {
+    "CACHE_EXPIRATION": {
       "description": "Cache invalidation time (unit: minutes)",
       "value": "60"
     },
