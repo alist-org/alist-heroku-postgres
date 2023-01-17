@@ -34,14 +34,16 @@ type CacheConfig struct {
 }
 
 type Config struct {
-	Force    bool        `json:"force"`
-	Address  string      `json:"address" env:"ADDR"`
-	Port     int         `json:"port" env:"PORT"`
-	Assets   string      `json:"assets" env:"ASSETS"`
-	Database Database    `json:"database"`
-	Scheme   Scheme      `json:"scheme"`
-	Cache    CacheConfig `json:"cache"`
-	TempDir  string      `json:"temp_dir" env:"TEMP_DIR"`
+	Force       bool        `json:"force"`
+	Address     string      `json:"address" env:"ADDR"`
+	Port        int         `json:"port" env:"PORT"`
+	Assets      string      `json:"assets" env:"ASSETS"`
+	LocalAssets string      `json:"local_assets" env:"LOCAL_ASSETS"`
+	SubFolder   string      `json:"sub_folder" env:"SUB_FOLDER"`
+	Database    Database    `json:"database"`
+	Scheme      Scheme      `json:"scheme"`
+	Cache       CacheConfig `json:"cache"`
+	TempDir     string      `json:"temp_dir" env:"TEMP_DIR"`
 }
 
 func main() {
