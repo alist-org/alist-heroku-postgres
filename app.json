@@ -1,18 +1,10 @@
 {
-  "name": "Alist v2",
+  "name": "Alist v3",
   "description": "Alist on Heroku",
   "keywords": ["Alist"],
   "env": {
-    "CACHE_EXPIRATION": {
-      "description": "Cache invalidation time (unit: minutes)",
-      "value": "60"
-    },
-    "CLEANUP_INTERVAL": {
-      "description": "Clear the invalidation cache interval",
-      "value": "120"
-    },
-    "ASSETS": {
-      "description": "static resources(refer to https://alist-doc.nn.ci/en/docs/setting/config#assets)",
+    "CDN": {
+      "description": "static resources(refer to https://alist.nn.ci/config/configuration.html#cdn)",
       "value": "https://npm.elemecdn.com/alist-web@$version/dist/"
     }
   },
