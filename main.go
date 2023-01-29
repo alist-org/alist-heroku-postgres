@@ -8,6 +8,10 @@ import (
 	"net/url"
 	"os"
 	"strconv"
+	"path/filepath"
+
+	"github.com/alist-org/alist/v3/cmd/flags"
+	"github.com/alist-org/alist/v3/pkg/utils/random"
 )
 
 type Database struct {
@@ -19,7 +23,7 @@ type Database struct {
 	Name        string `json:"name" env:"DB_NAME"`
 	DBFile      string `json:"db_file" env:"DB_FILE"`
 	TablePrefix string `json:"table_prefix" env:"DB_TABLE_PREFIX"`
-	SslMode     string `json:"ssl_mode" env:"DB_SLL_MODE"`
+	SSLMode     string `json:"ssl_mode" env:"DB_SSL_MODE"`
 }
 
 type Scheme struct {
@@ -28,25 +32,36 @@ type Scheme struct {
 	KeyFile  string `json:"key_file" env:"KEY_FILE"`
 }
 
-type CacheConfig struct {
-	Expiration      int64 `json:"expiration" env:"CACHE_EXPIRATION"`
-	CleanupInterval int64 `json:"cleanup_interval" env:"CLEANUP_INTERVAL"`
+type LogConfig struct {
+	Enable     bool   `json:"enable" env:"LOG_ENABLE"`
+	Name       string `json:"name" env:"LOG_NAME"`
+	MaxSize    int    `json:"max_size" env:"MAX_SIZE"`
+	MaxBackups int    `json:"max_backups" env:"MAX_BACKUPS"`
+	MaxAge     int    `json:"max_age" env:"MAX_AGE"`
+	Compress   bool   `json:"compress" env:"COMPRESS"`
 }
 
 type Config struct {
-	Force       bool        `json:"force"`
-	Address     string      `json:"address" env:"ADDR"`
-	Port        int         `json:"port" env:"PORT"`
-	Assets      string      `json:"assets" env:"ASSETS"`
-	LocalAssets string      `json:"local_assets" env:"LOCAL_ASSETS"`
-	SubFolder   string      `json:"sub_folder" env:"SUB_FOLDER"`
-	Database    Database    `json:"database"`
-	Scheme      Scheme      `json:"scheme"`
-	Cache       CacheConfig `json:"cache"`
-	TempDir     string      `json:"temp_dir" env:"TEMP_DIR"`
+	Force          bool      `json:"force" env:"FORCE"`
+	Address        string    `json:"address" env:"ADDR"`
+	Port           int       `json:"port" env:"PORT"`
+	SiteURL        string    `json:"site_url" env:"SITE_URL"`
+	Cdn            string    `json:"cdn" env:"CDN"`
+	JwtSecret      string    `json:"jwt_secret" env:"JWT_SECRET"`
+	TokenExpiresIn int       `json:"token_expires_in" env:"TOKEN_EXPIRES_IN"`
+	Database       Database  `json:"database"`
+	Scheme         Scheme    `json:"scheme"`
+	TempDir        string    `json:"temp_dir" env:"TEMP_DIR"`
+	BleveDir       string    `json:"bleve_dir" env:"BLEVE_DIR"`
+	Log            LogConfig `json:"log"`
+	MaxConnections int       `json:"max_connections" env:"MAX_CONNECTIONS"`
 }
 
 func main() {
+	tempDir := filepath.Join(flags.DataDir, "temp")
+	indexDir := filepath.Join(flags.DataDir, "bleve")
+	logPath := filepath.Join(flags.DataDir, "log/log.log")
+	dbPath := filepath.Join(flags.DataDir, "data.db")
 	DATABASE_URL := os.Getenv("DATABASE_URL")
 	fmt.Println("DatabaseUrl", DATABASE_URL)
 	//DATABASE_URL = "postgres://hfhgpvbymdzusj:39d7f6f3ee4288103e382d5dec22ce668c4e5cb65120f64d574b808775674eb4@ec2-3-218-171-44.compute-1.amazonaws.com:5432/d4o07n33pf6ot7"
@@ -60,8 +75,10 @@ func main() {
 	port, _ := strconv.Atoi(u.Port())
 	name := u.Path[1:]
 	config := Config{
-		Address: "0.0.0.0",
-		TempDir: "data/temp",
+		Address:        "0.0.0.0",
+		JwtSecret:      random.String(16),
+		TokenExpiresIn: 48,
+		TempDir:        tempDir,
 		Database: Database{
 			User:        user,
 			Password:    pass,
@@ -69,8 +86,17 @@ func main() {
 			Port:        port,
 			Name:        name,
 			TablePrefix: "x_",
-			DBFile:      "data/data.db",
+			DBFile:      dbPath,
 		},
+		BleveDir: indexDir,
+		Log: LogConfig{
+			Enable:     true,
+			Name:       logPath,
+			MaxSize:    10,
+			MaxBackups: 5,
+			MaxAge:     28,
+		},
+		MaxConnections: 0,
 	}
 	confBody, err := json.MarshalIndent(config, "", "  ")
 	if err != nil {
