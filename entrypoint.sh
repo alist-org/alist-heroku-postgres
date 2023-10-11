@@ -1,5 +1,6 @@
+export HTTP_PORT=${PORT}
 mkdir -p /opt/alist/data/
 /main
 
 cd /opt/alist
-./alist -conf data/config.json -docker
+./alist server --no-prefix
